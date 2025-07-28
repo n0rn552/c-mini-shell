@@ -20,6 +20,9 @@ int main()
             break;
         }
         buffer[strcspn(buffer, "\n")] = '\0';
+
+        parse(buffer, &cmd, args);
+        handle_command(cmd, args);
     }
 
     return 0;
