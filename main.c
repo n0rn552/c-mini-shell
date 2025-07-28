@@ -19,6 +19,7 @@ int main()
             printf("\n>\n");
             break;
         }
+        if(!strcmp(buffer, "\n")) continue;
         buffer[strcspn(buffer, "\n")] = '\0';
 
         parse(buffer, &cmd, args);

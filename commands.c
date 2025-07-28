@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>  
 #include "commands.h"
+#define SIZE 500
 
 Command commands[] = {
     {"cd", cmd_cd},
@@ -14,7 +16,23 @@ Command commands[] = {
 
 void cmd_cd(char **args)
 {
-    puts("Its cd");
+    char *path = args[0];
+
+    if(path == NULL)
+    {
+        if((path = getenv("HOME")) == NULL)
+        {
+            printf("Error: HOME not set\n");
+            return;
+        }
+        else
+            printf("> HOME is %s\n", path);
+    }
+
+    if(chdir(path) != 0)
+    {
+        perror("Error");
+    }
 }
 
 
@@ -62,7 +80,12 @@ void cmd_echo(char **args)
 
 void cmd_pwd(char **args)
 {
-    puts("Its pwd");
+    (void)args;
+    char path[500];
+    if((getcwd(path, sizeof(path)) != NULL))
+        printf("> %s\n", path);
+    else
+        printf("> Error: pwd can not read your directory\n");
 }
 
 
