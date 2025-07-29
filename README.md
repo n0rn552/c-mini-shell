@@ -40,6 +40,6 @@ Examples:
 
 ## Project Structure
 
-* `main.c` — Entry point, main logic for input reading and parsing
-* `commands.c` — Implementations of built-in commands and external command execution
+* `main.c` — Entry point, main logic for input reading
+* `commands.c` — Implementations of parsing, built-in commands and external command execution
 * `commands.h` — Header file with function and struct declarations
