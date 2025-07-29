@@ -22,13 +22,6 @@ This is a **learning project** aimed at practicing system programming concepts i
 gcc -Wall -Wextra main.c commands.c -o mini-shell
 ./mini-shell
 
-## Build and Run
-
-```bash
-gcc -Wall -Wextra main.c commands.c -o mini-shell
-./mini-shell
-````
-
 ## Usage
 
 After launching, the shell shows a prompt `>`. You can type commands here.
