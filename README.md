@@ -21,6 +21,7 @@ This is a **learning project** aimed at practicing system programming concepts i
 ```bash
 gcc -Wall -Wextra main.c commands.c -o mini-shell
 ./mini-shell
+```
 
 ## Usage
 
