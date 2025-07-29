@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>  
+#include <sys/wait.h>
 #include "commands.h"
 #define SIZE 500
 
@@ -25,8 +26,6 @@ void cmd_cd(char **args)
             printf("Error: HOME not set\n");
             return;
         }
-        else
-            printf("> HOME is %s\n", path);
     }
 
     if(chdir(path) != 0)
@@ -59,19 +58,18 @@ void cmd_exit(char **args)
         }
         else
         {
-            printf("> Exit: invalid argument %s\n", args[0]);
+            printf("Exit: invalid argument %s\n", args[0]);
             code = 1;
         }
     }
 
-    printf("> Exitting with code %d\n", code);
+    printf("Exitting with code %d\n", code);
     exit(code);
 }
 
 
 void cmd_echo(char **args)
 {
-    printf(">");
     for(int i = 0; args[i] != NULL; i++)
         printf(" %s", args[i]);
     printf("\n");
@@ -83,11 +81,10 @@ void cmd_pwd(char **args)
     (void)args;
     char path[500];
     if((getcwd(path, sizeof(path)) != NULL))
-        printf("> %s\n", path);
+        printf("%s\n", path);
     else
-        printf("> Error: pwd can not read your directory\n");
+        printf("Error: pwd can not read your directory\n");
 }
-
 
 
 void handle_command(char *cmd, char **args)
@@ -100,17 +97,38 @@ void handle_command(char *cmd, char **args)
             return;
         }
     }
-    printf("Erorr: unknown command\n");
+
+    cmd_external(cmd, args);
 }
 
 void parse(char *buf, char **cmd, char **args)
 {
     *cmd = strtok(buf, " \t");
-    if(cmd == NULL) return;
+    if(*cmd == NULL) return;
 
     int nArgs = 0;  
     while((args[nArgs] = strtok(NULL, " \t")) != NULL)
         nArgs++;
 
     args[nArgs] = NULL;
+}
+
+
+void cmd_external(char *cmd, char **args)
+{
+    pid_t pid = fork();
+
+    if(pid == 0)
+    {
+        execvp(cmd, args);
+        
+        perror("Error");
+        exit(1);
+    }
+    else if(pid > 0)
+        waitpid(pid, NULL, 0);
+    else
+    {
+        perror("Error");
+    }
 }

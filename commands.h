@@ -11,6 +11,7 @@ void cmd_cd(char **args);
 void cmd_exit(char **args);
 void cmd_echo(char **args);
 void cmd_pwd(char **args);
+void cmd_external(char *cmd, char **args);
 
 
 
